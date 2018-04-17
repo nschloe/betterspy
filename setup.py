@@ -34,6 +34,7 @@ setup(
         'matplotlib',
         'numpy',
         'pipdate',
+        'purepng',
         ],
     classifiers=[
         about['__status__'],
