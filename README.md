@@ -6,6 +6,19 @@
 [![PyPi Version](https://img.shields.io/pypi/v/betterspy.svg)](https://pypi.org/project/betterspy)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/betterspy.svg?logo=github&label=Stars)](https://github.com/nschloe/betterspy)
 
+Show sparsity patterns of sparse matrices or write them to image files.
+
+Example:
+```python
+import betterspy
+
+A = sparse.rand(20, 20, density=0.1)
+betterspy.show(A)
+betterspy.write_png(A, 'out.png')
+```
+
+![](https://nschloe.github.io/betterspy/ATAsum.png)
+
 
 ### Installation
 
