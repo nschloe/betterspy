@@ -4,7 +4,8 @@
 Better spy() function for Scipy sparse matrices.
 '''
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+from matplotlib.patches import Rectangle
+from matplotlib.collections import PatchCollection
 from matplotlib.ticker import MaxNLocator
 
 import numpy
@@ -25,11 +26,13 @@ def plot(A, index0=0):
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
-    for row, cols in enumerate(A.tolil().rows):
-        for col in cols:
-            ax.add_patch(
-                patches.Rectangle((index0+col-0.5, index0+row-0.5), 1.0, 1.0, color='k')
-                )
+    patches = [
+        Rectangle((index0+col-0.5, index0+row-0.5), 1.0, 1.0)
+        for row, cols in enumerate(A.tolil().rows)
+        for col in cols
+        ]
+    p = PatchCollection(patches, color='k')
+    ax.add_collection(p)
     return
 
 
