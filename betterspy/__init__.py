@@ -9,7 +9,7 @@ from .__about__ import (
     __website__,
     )
 
-from .main import plot, show, save
+from .main import plot, show, write_png
 
 try:
     import pipdate
