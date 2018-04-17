@@ -15,7 +15,7 @@ jobs:
       # lint
       - run: pylint setup.py betterspy/ test/*.py
       # The tests
-      - run: cd test/ && pytest --cov betterspy
+      - run: cd test/ && MPLBACKEND=Agg pytest --cov betterspy
       # submit to codecov
       - run: apt install -y curl
       - run: bash <(curl -s https://codecov.io/bash)
