@@ -42,8 +42,8 @@ def show(*args, **kwargs):
     return
 
 
-def save(A, filename, transparent=False, coloring='binary'):
-    plot(A, coloring)
+def save(A, filename, transparent=False):
+    plot(A)
     plt.save(filename, transparent=transparent)
     return
 
