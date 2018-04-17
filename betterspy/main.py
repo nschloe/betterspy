@@ -9,6 +9,7 @@ from matplotlib.collections import PatchCollection
 from matplotlib.ticker import MaxNLocator
 
 import numpy
+import png  # purepng
 
 
 def plot(A, index0=0):
@@ -42,33 +43,29 @@ def show(*args, **kwargs):
     return
 
 
-def save(A, filename, transparent=False):
-    plot(A)
-    plt.save(filename, transparent=transparent)
-    return
-
-
-def save_png(A, coloring='binary'):
+def write_png(A, filename):
     m, n = A.shape
 
-    if coloring == 'binary':
-        X = numpy.zeros((m, n), dtype=bool)
-        for i, row in enumerate(A.tolil().rows):
-            X[i, row] = True
+    w = png.Writer(n, m, greyscale=True, bitdepth=1)
 
-    elif coloring == 'checkboard':
-        X = numpy.zeros((m, n), dtype=float)
-        for i, row in enumerate(A.tolil().rows):
-            for j in row:
-                X[i, j] = 1.0 if ((i+j) % 2) else 0.8
+    class RowIterator:
+        def __init__(self, A):
+            self.A = A.tocsr()
+            self.current = 0
+            return
 
-    else:
-        assert coloring == 'value', 'Illegal coloring \'{}\'.'.format(coloring)
-        X = numpy.zeros((m, n), dtype=float)
-        Alil = A.tolil()
-        for i, row in enumerate(Alil.rows):
-            for k, j in enumerate(row):
-                X[i, j] = abs(Alil.data[i][k])
+        def __iter__(self):
+            return self
 
-    plt.imshow(X, cmap='Greys', interpolation='nearest')
+        def __next__(self):
+            if self.current >= A.shape[0]:
+                raise StopIteration
+            out = numpy.ones(A.shape[1], dtype=bool)
+            out[self.A[self.current].indices] = False
+            self.current += 1
+            return out
+
+    with open(filename, 'wb') as f:
+        w.write(f, RowIterator(A))
+
     return

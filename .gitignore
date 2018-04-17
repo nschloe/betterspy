@@ -7,3 +7,4 @@ example/
 .cache/
 .pytest_cache/
 .coverage
+*.png
