@@ -1,20 +1,17 @@
-
+# -*- coding: utf-8 -*-
+#
+from PIL import Image
+from scipy import sparse
 
 import betterspy
-from PIL import Image
-import scipy.sparse as sps
-
-A = sps.rand(200, 200, density=0.01)
-M = sps.csr_matrix(A)
-
-#plt.spy(M)
-#betterspy.spy(A)
 
 
-im = Image.new('1', M.shape, 1)
-for i, row in enumerate(A.tolil().rows):
-    for j in row:
-        im.putpixel((i, j), 0)
+def test():
+    A = sparse.rand(200, 200, density=0.01)
+    M = sparse.csr_matrix(A)
+    betterspy.show(M)
+    return
 
-im.save('test.png')
-im.show()
+
+if __name__ == '__main__':
+    test()
