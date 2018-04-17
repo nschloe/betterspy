@@ -4,13 +4,48 @@
 Better spy() function for Scipy sparse matrices.
 '''
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+from matplotlib.ticker import MaxNLocator
+
 import numpy
 
 
-def plot(A, coloring):
-    '''A better alternative for matplotlib's spy() function that uses the
-    sparse data and maps it to a binary image.
-    '''
+def plot(A, index0=0):
+    m, n = A.shape
+    plt.figure()
+    plt.xlim(index0-0.5, index0+n-0.5)
+    plt.ylim(index0-0.5, index0+m-0.5)
+
+    ax = plt.gca()
+    ax.set_aspect('equal')
+    ax.invert_yaxis()
+    ax.xaxis.tick_top()
+
+    # https://stackoverflow.com/a/34880501/353337
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    for row, cols in enumerate(A.tolil().rows):
+        for col in cols:
+            ax.add_patch(
+                patches.Rectangle((index0+col-0.5, index0+row-0.5), 1.0, 1.0, color='k')
+                )
+    return
+
+
+def show(*args, **kwargs):
+    plot(*args, **kwargs)
+    plt.show()
+    return
+
+
+def save(A, filename, transparent=False, coloring='binary'):
+    plot(A, coloring)
+    plt.save(filename, transparent=transparent)
+    return
+
+
+def save_png(A, coloring='binary'):
     m, n = A.shape
 
     if coloring == 'binary':
@@ -33,16 +68,4 @@ def plot(A, coloring):
                 X[i, j] = abs(Alil.data[i][k])
 
     plt.imshow(X, cmap='Greys', interpolation='nearest')
-    return
-
-
-def show(A, coloring='binary'):
-    plot(A, coloring)
-    plt.show()
-    return
-
-
-def save(A, filename, transparent=False, coloring='binary'):
-    plot(A, coloring)
-    plt.save(filename, transparent=transparent)
     return
