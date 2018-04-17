@@ -2,8 +2,7 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/nschloe/betterspy/master.svg)](https://circleci.com/gh/nschloe/betterspy)
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/betterspy.svg)](https://codecov.io/gh/nschloe/betterspy)
-[![Codacy grade](https://img.shields.io/codacy/grade/8ce98e78f7ef427292593d08815c4fa3.svg)](https://app.codacy.com/app/nschloe/betterspy/dashboard)
-[![awesome](https://img.shields.io/badge/awesome-yes-ff69b4.svg)](https://github.com/nschloe/betterspy)
+[![Codacy grade](https://img.shields.io/codacy/grade/df2f2e53e5e3465f9475e6c79d7003f2.svg)](https://app.codacy.com/app/nschloe/betterspy/dashboard)
 [![PyPi Version](https://img.shields.io/pypi/v/betterspy.svg)](https://pypi.org/project/betterspy)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/betterspy.svg?logo=github&label=Stars)](https://github.com/nschloe/betterspy)
 
