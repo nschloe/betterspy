@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-from PIL import Image
 from scipy import sparse
 
 import betterspy
