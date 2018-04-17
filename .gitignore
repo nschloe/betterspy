@@ -1,0 +1,9 @@
+*.bib
+*.pyc
+build/
+dist/
+example/
+*.egg-info/
+.cache/
+.pytest_cache/
+.coverage
