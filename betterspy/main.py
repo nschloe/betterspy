@@ -45,6 +45,7 @@ def show(*args, **kwargs):
 
 
 class RowIterator:
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, A, border_width, border_color, colormap):
         self.A = A.tocsr()
         self.border_width = border_width
@@ -73,17 +74,20 @@ class RowIterator:
 
         if colormap is None:
             if self.mode == 'binary':
+                # pylint: disable=unused-argument
                 def convert_values(idx, vals):
                     out = numpy.ones(self.A.shape[1], dtype=self.dtype)
                     out[idx] = False
                     return out
             elif self.mode == 'grayscale':
+                # pylint: disable=unused-argument
                 def convert_values(idx, vals):
                     out = numpy.full(self.A.shape[1], 255, dtype=self.dtype)
                     out[idx] = 0
                     return out
             else:
                 assert self.mode == 'rgb'
+                # pylint: disable=unused-argument
                 def convert_values(idx, vals):
                     out = numpy.full(
                         (self.A.shape[1], 3), 255, dtype=self.dtype
@@ -106,7 +110,6 @@ class RowIterator:
             def convert_values(idx, vals):
                 x = numpy.zeros(self.A.shape[1])
                 x[idx] = vals
-                # TODO to_rgb
                 out = scalar_map.to_rgba(x)[:, :3] * 255
                 out = numpy.round(out).astype(self.dtype)
                 return out.flatten()
