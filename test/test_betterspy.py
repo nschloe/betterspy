@@ -13,7 +13,8 @@ def test_show():
 
 def test_png():
     M = sparse.rand(20, 20, density=0.1)
-    betterspy.write_png(M, 'test.png', border_width=5)
+    betterspy.write_png(M, 'test.png', border_width=0)
+    betterspy.write_png(M, 'border1.png', border_width=1)
     return
 
 
