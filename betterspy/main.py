@@ -43,51 +43,21 @@ def show(*args, **kwargs):
     return
 
 
-class RowIteratorBlackWhite:
-    def __init__(self, A, border_width):
-        self.A = A.tocsr()
-        self.border_width = border_width
-        # The border color must be 0.0 (black)
-
-        self.dtype = numpy.bool
-        self.bitdepth = 1
-
-        self.current = 0
-        return
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        m = self.A.shape[0]
-        b = self.border_width
-
-        if self.current >= m + 2*b:
-            raise StopIteration
-        out = numpy.full(self.A.shape[1] + 2*b, True, dtype=self.dtype)
-
-        if self.current < b:
-            out[:] = False
-        elif self.current > m + b - 1:
-            out[:] = False
-        else:
-            out[self.A[self.current-b].indices + b] = 0
-            out[:b] = False
-            if b > 0:
-                out[-b:] = False
-
-        self.current += 1
-        return out
-
-
-class RowIteratorGray:
+class RowIterator:
     def __init__(self, A, border_width, border_color):
         self.A = A.tocsr()
         self.border_width = border_width
-        self.border_color = border_color
 
-        self.dtype = numpy.int8
-        self.bitdepth = 8
+        if self.border_width == 0:
+            self.border_color = False
+            self.default_color = True
+            self.dtype = numpy.bool
+            self.bitdepth = 1
+        else:
+            self.border_color = border_color
+            self.default_color = 255
+            self.dtype = numpy.int8
+            self.bitdepth = 8
 
         self.current = 0
         return
@@ -101,7 +71,9 @@ class RowIteratorGray:
 
         if self.current >= m + 2*b:
             raise StopIteration
-        out = numpy.full(self.A.shape[1] + 2*b, 255, dtype=self.dtype)
+        out = numpy.full(
+            self.A.shape[1] + 2*b, self.default_color, dtype=self.dtype
+            )
 
         if self.current < b:
             out[:] = self.border_color
@@ -118,10 +90,7 @@ class RowIteratorGray:
 
 
 def write_png(A, filename, border_width=0, border_color=128):
-    if border_width == 0:
-        iterator = RowIteratorBlackWhite(A, border_width)
-    else:
-        iterator = RowIteratorGray(A, border_width, border_color)
+    iterator = RowIterator(A, border_width, border_color)
 
     m, n = A.shape
     w = png.Writer(
