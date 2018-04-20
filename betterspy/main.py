@@ -44,18 +44,38 @@ def show(*args, **kwargs):
 
 
 class RowIterator:
-    def __init__(self, A, border_width, border_color):
+    def __init__(self, A, border_width, border_color, colormap):
         self.A = A.tocsr()
         self.border_width = border_width
 
-        if self.border_width == 0:
+        if self.border_width == 0 and colormap is None:
             self.border_color = False
-            self.default_color = True
-            self.dtype = numpy.bool
             self.bitdepth = 1
-        else:
+            self.dtype = numpy.bool
+
+            def convert_values(idx, vals):
+                out = numpy.ones(self.A.shape[1], dtype=self.dtype)
+                out[idx] = False
+                return out
+
+            self.convert_values = convert_values
+
+        elif colormap is None:
             self.border_color = border_color
-            self.default_color = 255
+            self.bitdepth = 8
+            self.dtype = numpy.int8
+
+            def convert_values(idx, vals):
+                out = numpy.full(self.A.shape[1], 255, dtype=self.dtype)
+                out[idx] = 0
+                return out
+
+            self.convert_values = convert_values
+
+        else:
+            assert False
+            self.border_color = border_color
+            self.zero_color = 255
             self.dtype = numpy.int8
             self.bitdepth = 8
 
@@ -71,26 +91,28 @@ class RowIterator:
 
         if self.current >= m + 2*b:
             raise StopIteration
-        out = numpy.full(
-            self.A.shape[1] + 2*b, self.default_color, dtype=self.dtype
-            )
 
-        if self.current < b:
-            out[:] = self.border_color
-        elif self.current > m + b - 1:
-            out[:] = self.border_color
+        if b == 0:
+            row = self.A[self.current-b]
+            out = self.convert_values(row.indices, row.data)
         else:
-            out[self.A[self.current-b].indices + b] = 0
+            out = numpy.empty(self.A.shape[1] + 2*b, dtype=self.dtype)
             out[:b] = self.border_color
-            if b > 0:
-                out[-b:] = self.border_color
+            out[-b:] = self.border_color
+            if self.current < b:
+                out[b:-b] = self.border_color
+            elif self.current > m + b - 1:
+                out[b:-b] = self.border_color
+            else:
+                row = self.A[self.current-b]
+                out[b:-b] = self.convert_values(row.indices, row.data)
 
         self.current += 1
         return out
 
 
-def write_png(A, filename, border_width=0, border_color=128):
-    iterator = RowIterator(A, border_width, border_color)
+def write_png(A, filename, border_width=0, border_color=128, colormap=None):
+    iterator = RowIterator(A, border_width, border_color, colormap)
 
     m, n = A.shape
     w = png.Writer(
