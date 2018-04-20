@@ -43,14 +43,11 @@ def show(*args, **kwargs):
     return
 
 
-def write_png(A, filename):
-    m, n = A.shape
-
-    w = png.Writer(n, m, greyscale=True, bitdepth=1)
-
+def write_png(A, filename, border_width=0, border_color='D3D3D3'):
     class RowIterator:
-        def __init__(self, A):
+        def __init__(self, A, border_width):
             self.A = A.tocsr()
+            self.border_width = border_width
             self.current = 0
             return
 
@@ -58,14 +55,29 @@ def write_png(A, filename):
             return self
 
         def __next__(self):
-            if self.current >= A.shape[0]:
+            m = self.A.shape[0]
+            if self.current >= m + 2*border_width:
                 raise StopIteration
-            out = numpy.ones(A.shape[1], dtype=bool)
-            out[self.A[self.current].indices] = False
+            out = numpy.ones(A.shape[1] + 2*border_width, dtype=bool)
+
+            if self.current < border_width:
+                out[:] = False
+            elif self.current > m + border_width - 1:
+                out[:] = False
+            else:
+                out[self.A[self.current-border_width].indices] = False
+                out[:border_width] = False
+                out[-border_width:] = False
+
             self.current += 1
             return out
 
+    m, n = A.shape
+    w = png.Writer(
+        n+2*border_width, m+2*border_width, greyscale=True, bitdepth=1
+        )
+
     with open(filename, 'wb') as f:
-        w.write(f, RowIterator(A))
+        w.write(f, RowIterator(A, border_width))
 
     return
