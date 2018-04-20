@@ -56,22 +56,21 @@ class RowIteratorBlackWhite:
 
     def __next__(self):
         m = self.A.shape[0]
-        if self.current >= m + 2*self.border_width:
-            raise StopIteration
-        out = numpy.full(
-            self.A.shape[1] + 2*self.border_width, True,
-            dtype=numpy.bool
-            )
+        b = self.border_width
 
-        if self.current < self.border_width:
+        if self.current >= m + 2*b:
+            raise StopIteration
+        out = numpy.full(self.A.shape[1] + 2*b, True, dtype=numpy.bool)
+
+        if self.current < b:
             out[:] = False
-        elif self.current > m + self.border_width - 1:
+        elif self.current > m + b - 1:
             out[:] = False
         else:
-            out[self.A[self.current-self.border_width].indices] = 0
-            out[:self.border_width] = False
-            if self.border_width > 0:
-                out[-self.border_width:] = False
+            out[self.A[self.current-b].indices + b] = 0
+            out[:b] = False
+            if b > 0:
+                out[-b:] = False
 
         self.current += 1
         return out
@@ -90,22 +89,21 @@ class RowIteratorGray:
 
     def __next__(self):
         m = self.A.shape[0]
-        if self.current >= m + 2*self.border_width:
-            raise StopIteration
-        out = numpy.full(
-            self.A.shape[1] + 2*self.border_width, 255,
-            dtype=numpy.int8
-            )
+        b = self.border_width
 
-        if self.current < self.border_width:
+        if self.current >= m + 2*b:
+            raise StopIteration
+        out = numpy.full(self.A.shape[1] + 2*b, 255, dtype=numpy.int8)
+
+        if self.current < b:
             out[:] = self.border_color
-        elif self.current > m + self.border_width - 1:
+        elif self.current > m + b - 1:
             out[:] = self.border_color
         else:
-            out[self.A[self.current-self.border_width].indices+self.border_width] = 0
-            out[:self.border_width] = self.border_color
-            if self.border_width > 0:
-                out[-self.border_width:] = self.border_color
+            out[self.A[self.current-b].indices + b] = 0
+            out[:b] = self.border_color
+            if b > 0:
+                out[-b:] = self.border_color
 
         self.current += 1
         return out
