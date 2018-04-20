@@ -14,10 +14,14 @@ import betterspy
 
 A = sparse.rand(20, 20, density=0.1)
 betterspy.show(A)
-betterspy.write_png(A, 'out.png')
+betterspy.write_png('out1.png', A, border_width=2)
+betterspy.write_png('out2.png', A, border_width=2, colormap='viridis')
 ```
 
-![](https://nschloe.github.io/betterspy/ATAsum.png)
+<img src="https://nschloe.github.io/betterspy/plain.png"> |
+<img src="https://nschloe.github.io/betterspy/viridis.png">
+:-------------------:|:------------------:|
+no colormap          |  viridis           |
 
 
 ### Installation
