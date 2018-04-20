@@ -102,7 +102,7 @@ class RowIteratorGray:
         elif self.current > m + self.border_width - 1:
             out[:] = self.border_color
         else:
-            out[self.A[self.current-self.border_width].indices] = 0
+            out[self.A[self.current-self.border_width].indices+self.border_width] = 0
             out[:self.border_width] = self.border_color
             if self.border_width > 0:
                 out[-self.border_width:] = self.border_color
