@@ -146,7 +146,7 @@ class RowIterator:
         return out
 
 
-def write_png(A, filename, border_width=0, border_color='0.5', colormap=None):
+def write_png(filename, A, border_width=0, border_color='0.5', colormap=None):
     iterator = RowIterator(A, border_width, border_color, colormap)
 
     m, n = A.shape
