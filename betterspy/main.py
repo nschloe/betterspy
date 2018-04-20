@@ -52,33 +52,43 @@ class RowIterator:
             self.border_color = False
             self.bitdepth = 1
             self.dtype = numpy.bool
-
             def convert_values(idx, vals):
                 out = numpy.ones(self.A.shape[1], dtype=self.dtype)
                 out[idx] = False
                 return out
 
-            self.convert_values = convert_values
-
         elif colormap is None:
             self.border_color = border_color
             self.bitdepth = 8
             self.dtype = numpy.int8
-
             def convert_values(idx, vals):
                 out = numpy.full(self.A.shape[1], 255, dtype=self.dtype)
                 out[idx] = 0
                 return out
 
-            self.convert_values = convert_values
-
         else:
-            assert False
             self.border_color = border_color
-            self.zero_color = 255
             self.dtype = numpy.int8
             self.bitdepth = 8
 
+            import matplotlib.colors as colors
+            import matplotlib.cm as cmx
+            cm = plt.get_cmap(colormap)
+
+            c_norm  = colors.Normalize(
+                vmin=min(0.0, self.A.data.min()),
+                vmax=max(0.0, self.A.data.max())
+                )
+            scalar_map = cmx.ScalarMappable(norm=c_norm, cmap=cm)
+
+            def convert_values(idx, vals):
+                x = numpy.zeros(self.A.shape[1])
+                x[idx] = vals
+                out = scalar_map.to_rgba(x)[:, :3] * 255
+                out = numpy.round(out).astype(numpy.int8)
+                return out.flatten()
+
+        self.convert_values = convert_values
         self.current = 0
         return
 
@@ -93,7 +103,7 @@ class RowIterator:
             raise StopIteration
 
         if b == 0:
-            row = self.A[self.current-b]
+            row = self.A[self.current]
             out = self.convert_values(row.indices, row.data)
         else:
             out = numpy.empty(self.A.shape[1] + 2*b, dtype=self.dtype)
@@ -116,7 +126,8 @@ def write_png(A, filename, border_width=0, border_color=128, colormap=None):
 
     m, n = A.shape
     w = png.Writer(
-        n+2*border_width, m+2*border_width, greyscale=True,
+        n+2*border_width, m+2*border_width,
+        greyscale=colormap is None,
         bitdepth=iterator.bitdepth
         )
 

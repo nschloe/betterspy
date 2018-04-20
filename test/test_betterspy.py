@@ -15,6 +15,7 @@ def test_png():
     M = sparse.rand(20, 30, density=0.1)
     betterspy.write_png(M, 'test.png', border_width=0)
     betterspy.write_png(M, 'border1.png', border_width=1)
+    betterspy.write_png(M, 'viridis.png', colormap='viridis')
     return
 
 
