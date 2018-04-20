@@ -48,6 +48,10 @@ class RowIteratorBlackWhite:
         self.A = A.tocsr()
         self.border_width = border_width
         # The border color must be 0.0 (black)
+
+        self.dtype = numpy.bool
+        self.bitdepth = 1
+
         self.current = 0
         return
 
@@ -60,7 +64,7 @@ class RowIteratorBlackWhite:
 
         if self.current >= m + 2*b:
             raise StopIteration
-        out = numpy.full(self.A.shape[1] + 2*b, True, dtype=numpy.bool)
+        out = numpy.full(self.A.shape[1] + 2*b, True, dtype=self.dtype)
 
         if self.current < b:
             out[:] = False
@@ -81,6 +85,10 @@ class RowIteratorGray:
         self.A = A.tocsr()
         self.border_width = border_width
         self.border_color = border_color
+
+        self.dtype = numpy.int8
+        self.bitdepth = 8
+
         self.current = 0
         return
 
@@ -93,7 +101,7 @@ class RowIteratorGray:
 
         if self.current >= m + 2*b:
             raise StopIteration
-        out = numpy.full(self.A.shape[1] + 2*b, 255, dtype=numpy.int8)
+        out = numpy.full(self.A.shape[1] + 2*b, 255, dtype=self.dtype)
 
         if self.current < b:
             out[:] = self.border_color
@@ -112,15 +120,13 @@ class RowIteratorGray:
 def write_png(A, filename, border_width=0, border_color=128):
     if border_width == 0:
         iterator = RowIteratorBlackWhite(A, border_width)
-        bitdepth = 1
     else:
         iterator = RowIteratorGray(A, border_width, border_color)
-        bitdepth = 8
 
     m, n = A.shape
     w = png.Writer(
         n+2*border_width, m+2*border_width, greyscale=True,
-        bitdepth=bitdepth
+        bitdepth=iterator.bitdepth
         )
 
     with open(filename, 'wb') as f:
