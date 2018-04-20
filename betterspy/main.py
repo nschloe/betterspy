@@ -43,7 +43,7 @@ def show(*args, **kwargs):
     return
 
 
-def write_png(A, filename, border_width=0, border_color='D3D3D3'):
+def write_png(A, filename, border_width=0, border_color=128):
     class RowIterator:
         def __init__(self, A, border_width):
             self.A = A.tocsr()
@@ -58,23 +58,23 @@ def write_png(A, filename, border_width=0, border_color='D3D3D3'):
             m = self.A.shape[0]
             if self.current >= m + 2*border_width:
                 raise StopIteration
-            out = numpy.ones(A.shape[1] + 2*border_width, dtype=bool)
+            out = numpy.full(A.shape[1] + 2*border_width, 255, dtype=numpy.int8)
 
             if self.current < border_width:
-                out[:] = False
+                out[:] = border_color
             elif self.current > m + border_width - 1:
-                out[:] = False
+                out[:] = border_color
             else:
-                out[self.A[self.current-border_width].indices] = False
-                out[:border_width] = False
-                out[-border_width:] = False
+                out[self.A[self.current-border_width].indices] = 0
+                out[:border_width] = border_color
+                out[-border_width:] = border_color
 
             self.current += 1
             return out
 
     m, n = A.shape
     w = png.Writer(
-        n+2*border_width, m+2*border_width, greyscale=True, bitdepth=1
+        n+2*border_width, m+2*border_width, greyscale=True,
         )
 
     with open(filename, 'wb') as f:
