@@ -19,7 +19,6 @@ def test_show():
 def test_png():
     M = sparse.rand(20, 30, density=0.1, random_state=123)
 
-
     with tempfile.TemporaryDirectory() as temp_dir:
         filepath = os.path.join(temp_dir, 'test.png')
         betterspy.write_png(M, filepath, border_width=0)
