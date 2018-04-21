@@ -8,6 +8,7 @@ import numpy
 from scipy import sparse
 
 import betterspy
+import pytest
 
 
 def test_show():
@@ -15,42 +16,25 @@ def test_show():
     betterspy.show(M)
     return
 
-
-def test_png():
+@pytest.mark.parametrize(
+    'ref, kwargs', [
+    (6967620, {}),
+    (7502920, {'border_width': 1}),
+    (21370785, {'border_width': 1, 'border_color': 'red'}),
+    (4986520, {'colormap': 'viridis'}),
+    (6996597, {'colormap': 'viridis', 'border_width': 1}),
+    ])
+def test_png(ref, kwargs):
     M = sparse.rand(20, 30, density=0.1, random_state=123)
+    numpy.random.seed(123)
 
     with tempfile.TemporaryDirectory() as temp_dir:
         filepath = os.path.join(temp_dir, 'test.png')
-        betterspy.write_png(filepath, M, border_width=0)
+        betterspy.write_png(filepath, M, **kwargs)
         im = imageio.imread(filepath)
-        numpy.random.seed(123)
-        y = numpy.random.randint(0, 100, size=20*30)
-        assert numpy.dot(y, im.flatten()) == 6967620
+        y = numpy.random.randint(0, 100, size=numpy.prod(im.shape))
+        assert numpy.dot(y, im.flatten()) == ref
 
-        filepath = os.path.join(temp_dir, 'border1.png')
-        betterspy.write_png(filepath, M, border_width=1)
-        im = imageio.imread(filepath)
-        numpy.random.seed(123)
-        y = numpy.random.randint(0, 100, size=22*32)
-        assert numpy.dot(y, im.flatten()) == 7502920
-
-        filepath = os.path.join(temp_dir, 'border_red.png')
-        betterspy.write_png(filepath, M, border_width=1, border_color='red')
-        im = imageio.imread(filepath)
-        y = numpy.random.randint(0, 100, size=22*32*3)
-        assert numpy.dot(y, im.flatten()) == 21627060
-
-        filepath = os.path.join(temp_dir, 'viridis.png')
-        betterspy.write_png(filepath, M, colormap='viridis')
-        im = imageio.imread(filepath)
-        y = numpy.random.randint(0, 100, size=20*30*3)
-        assert numpy.dot(y, im.flatten()) == 5163692
-
-        filepath = os.path.join(temp_dir, 'viridis-border1.png')
-        betterspy.write_png(filepath, M, colormap='viridis', border_width=1)
-        im = imageio.imread(filepath)
-        y = numpy.random.randint(0, 100, size=22*32*3)
-        assert numpy.dot(y, im.flatten()) == 6939887
     return
 
 
