@@ -30,7 +30,7 @@ setup(
     url=about["__website__"],
     license=about["__license__"],
     platforms="any",
-    install_requires=["matplotlib", "numpy", "pipdate", "purepng", "scipy"],
+    install_requires=["matplotlib", "numpy", "purepng", "scipy"],
     classifiers=[
         about["__status__"],
         about["__license__"],
