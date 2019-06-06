@@ -63,12 +63,14 @@ class RowIterator:
 
         if colormap is None:
             if self.mode == "binary":
+
                 def convert_values(idx, vals):
                     out = numpy.ones(self.A.shape[1], dtype=self.dtype)
                     out[idx] = False
                     return out
 
             elif self.mode == "grayscale":
+
                 def convert_values(idx, vals):
                     out = numpy.full(self.A.shape[1], 255, dtype=self.dtype)
                     out[idx] = 0
@@ -76,6 +78,7 @@ class RowIterator:
 
             else:
                 assert self.mode == "rgb"
+
                 def convert_values(idx, vals):
                     out = numpy.full((self.A.shape[1], 3), 255, dtype=self.dtype)
                     out[idx, :] = 0
