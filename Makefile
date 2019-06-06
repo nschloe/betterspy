@@ -22,3 +22,10 @@ publish: tag upload
 clean:
 	@find . | grep -E "(__pycache__|\.pyc|\.pyo$\)" | xargs rm -rf
 	@rm -rf *.egg-info/ build/ dist/
+
+black:
+	black setup.py betterspy/ test/*.py
+
+lint:
+	black --check setup.py betterspy/ test/*.py
+	flake8 setup.py betterspy/ test/*.py

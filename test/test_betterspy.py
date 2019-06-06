@@ -16,19 +16,23 @@ def test_show():
     betterspy.show(M)
     return
 
-@pytest.mark.parametrize('ref, kwargs', [
-    (6967620, {}),
-    (7502920, {'border_width': 1}),
-    (21370785, {'border_width': 1, 'border_color': 'red'}),
-    (4986520, {'colormap': 'viridis'}),
-    (6996597, {'colormap': 'viridis', 'border_width': 1}),
-    ])
+
+@pytest.mark.parametrize(
+    "ref, kwargs",
+    [
+        (6967620, {}),
+        (7502920, {"border_width": 1}),
+        (21370785, {"border_width": 1, "border_color": "red"}),
+        (4986520, {"colormap": "viridis"}),
+        (6996597, {"colormap": "viridis", "border_width": 1}),
+    ],
+)
 def test_png(ref, kwargs):
     M = sparse.rand(20, 30, density=0.1, random_state=123)
     numpy.random.seed(123)
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        filepath = os.path.join(temp_dir, 'test.png')
+        filepath = os.path.join(temp_dir, "test.png")
         betterspy.write_png(filepath, M, **kwargs)
         im = imageio.imread(filepath)
         y = numpy.random.randint(0, 100, size=numpy.prod(im.shape))
@@ -40,9 +44,17 @@ def test_png(ref, kwargs):
 # pylint: disable=too-many-locals
 def test_readme_images():
     from dolfin import (
-        MeshEditor, Mesh, FunctionSpace, assemble, EigenMatrix, dot, grad, dx,
-        TrialFunction, TestFunction
-        )
+        MeshEditor,
+        Mesh,
+        FunctionSpace,
+        assemble,
+        EigenMatrix,
+        dot,
+        grad,
+        dx,
+        TrialFunction,
+        TestFunction,
+    )
     import meshzoo
 
     points, cells = meshzoo.rectangle(-1.0, 1.0, -1.0, 1.0, 20, 20)
@@ -51,7 +63,7 @@ def test_readme_images():
     editor = MeshEditor()
     mesh = Mesh()
     # topological and geometrical dimension 2
-    editor.open(mesh, 'triangle', 2, 2, 1)
+    editor.open(mesh, "triangle", 2, 2, 1)
     editor.init_vertices(len(points))
     editor.init_cells(len(cells))
     for k, point in enumerate(points):
@@ -60,7 +72,7 @@ def test_readme_images():
         editor.add_cell(k, cell)
     editor.close()
 
-    V = FunctionSpace(mesh, 'CG', 1)
+    V = FunctionSpace(mesh, "CG", 1)
     u = TrialFunction(V)
     v = TestFunction(V)
     L = EigenMatrix()
@@ -71,7 +83,7 @@ def test_readme_images():
     M = A
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        filepath = os.path.join(temp_dir, 'test.png')
+        filepath = os.path.join(temp_dir, "test.png")
         betterspy.write_png(filepath, M, border_width=2)
 
     # betterspy.write_png(
@@ -81,5 +93,5 @@ def test_readme_images():
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_readme_images()

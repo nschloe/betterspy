@@ -47,7 +47,9 @@ def _get_parser():
 
     parser.add_argument("infile", type=str, help="input matrix market file")
 
-    parser.add_argument("outfile", type=str, nargs='?', default=None, help="output png file (optional)")
+    parser.add_argument(
+        "outfile", type=str, nargs="?", default=None, help="output png file (optional)"
+    )
 
     parser.add_argument(
         "--border-width",
