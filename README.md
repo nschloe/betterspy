@@ -2,6 +2,7 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/nschloe/betterspy/master.svg)](https://circleci.com/gh/nschloe/betterspy)
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/betterspy.svg)](https://codecov.io/gh/nschloe/betterspy)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![PyPi Version](https://img.shields.io/pypi/v/betterspy.svg)](https://pypi.org/project/betterspy)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/betterspy.svg?logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/betterspy)
 
@@ -30,10 +31,9 @@ no colormap          |  viridis           |
 betterspy is [available from the Python Package
 Index](https://pypi.org/project/betterspy/), so simply do
 ```
-pip3 install -U betterspy
+pip3 install betterspy --user
 ```
-to install or upgrade. Use `sudo -H` to install as root or the `--user` option
-of `pip3` to install in `$HOME`.
+to install.
 
 
 ### Testing
