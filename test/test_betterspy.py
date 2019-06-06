@@ -20,11 +20,11 @@ def test_show():
 @pytest.mark.parametrize(
     "ref, kwargs",
     [
-        (6967620, {}),
-        (7502920, {"border_width": 1}),
-        (21370785, {"border_width": 1, "border_color": "red"}),
-        (4986520, {"colormap": "viridis"}),
-        (6996597, {"colormap": "viridis", "border_width": 1}),
+        (6875310, {}),
+        (7524085, {"border_width": 1}),
+        (21306270, {"border_width": 1, "border_color": "red"}),
+        (4981037, {"colormap": "viridis"}),
+        (7101351, {"colormap": "viridis", "border_width": 1}),
     ],
 )
 def test_png(ref, kwargs):
@@ -41,7 +41,6 @@ def test_png(ref, kwargs):
     return
 
 
-# pylint: disable=too-many-locals
 def test_readme_images():
     from dolfin import (
         MeshEditor,

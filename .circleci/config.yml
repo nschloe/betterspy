@@ -5,9 +5,9 @@ jobs:
     docker:
       - image: ubuntu:18.04
     steps:
-      - checkout
       - run: apt update
-      - run: apt install -y python3-pip
+      - run: apt install -y git python3-pip
+      - checkout
       - run: pip3 install -U black flake8
       - run: LC_ALL=C.UTF-8 black --check setup.py betterspy/ test/*.py
       - run: flake8 setup.py betterspy/ test/*.py
