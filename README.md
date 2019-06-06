@@ -14,9 +14,11 @@ import betterspy
 
 A = sparse.rand(20, 20, density=0.1)
 betterspy.show(A)
-betterspy.write_png('out1.png', A)
 betterspy.write_png(
-    'out2.png', A, border_width=2, border_color='red', colormap='viridis'
+    "out.png", A,
+    # border_width=2,
+    # border_color="red",
+    # colormap="viridis"
     )
 ```
 
