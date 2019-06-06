@@ -35,6 +35,7 @@ setup(
         'numpy',
         'pipdate',
         'purepng',
+        "scipy",
         ],
     classifiers=[
         about['__status__'],
@@ -46,5 +47,6 @@ setup(
         'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering',
         'Topic :: Utilities'
-        ]
+        ],
+    entry_points={"console_scripts": ["betterspy = betterspy.cli:main"]},
     )

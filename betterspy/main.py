@@ -3,38 +3,23 @@
 '''
 Better spy() function for Scipy sparse matrices.
 '''
+import tempfile
+
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
-from matplotlib.collections import PatchCollection
-from matplotlib.ticker import MaxNLocator
+import matplotlib.image as mpimg
 import matplotlib.colors as colors
 
 import numpy
 import png  # purepng
 
 
-def plot(A, index0=0):
-    m, n = A.shape
-    plt.figure()
-    plt.xlim(index0-0.5, index0+n-0.5)
-    plt.ylim(index0-0.5, index0+m-0.5)
+def plot(A, border_width=0, border_color="0.5", colormap=None):
+    with tempfile.NamedTemporaryFile() as fp:
+        write_png(fp.name, A, border_width=border_width, border_color=border_color,
+                colormap=colormap)
+        img = mpimg.imread(fp.name)
+        plt.imshow(img, origin='upper', interpolation="nearest")
 
-    ax = plt.gca()
-    ax.set_aspect('equal')
-    ax.invert_yaxis()
-    ax.xaxis.tick_top()
-
-    # https://stackoverflow.com/a/34880501/353337
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
-
-    patches = [
-        Rectangle((index0+col-0.5, index0+row-0.5), 1.0, 1.0)
-        for row, cols in enumerate(A.tolil().rows)
-        for col in cols
-        ]
-    p = PatchCollection(patches, color='k')
-    ax.add_collection(p)
     return
 
 
@@ -45,7 +30,6 @@ def show(*args, **kwargs):
 
 
 class RowIterator:
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, A, border_width, border_color, colormap):
         self.A = A.tocsr()
         self.border_width = border_width
