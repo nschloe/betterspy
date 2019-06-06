@@ -25,6 +25,12 @@ betterspy.write_png(
 :-------------------:|:------------------:|
 no colormap          |  viridis           |
 
+There is a command-line tool that can be used to show matrix-market files:
+```
+betterspy msc00726.mtx [out.png]
+```
+See `betterspy -h` for all options.
+
 
 ### Installation
 
