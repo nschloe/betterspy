@@ -1,40 +1,30 @@
 # -*- coding: utf8 -*-
 #
-'''
+"""
 Better spy() function for Scipy sparse matrices.
-'''
+"""
+import tempfile
+
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
-from matplotlib.collections import PatchCollection
-from matplotlib.ticker import MaxNLocator
+import matplotlib.image as mpimg
 import matplotlib.colors as colors
 
 import numpy
 import png  # purepng
 
 
-def plot(A, index0=0):
-    m, n = A.shape
-    plt.figure()
-    plt.xlim(index0-0.5, index0+n-0.5)
-    plt.ylim(index0-0.5, index0+m-0.5)
+def plot(A, border_width=0, border_color="0.5", colormap=None):
+    with tempfile.NamedTemporaryFile() as fp:
+        write_png(
+            fp.name,
+            A,
+            border_width=border_width,
+            border_color=border_color,
+            colormap=colormap,
+        )
+        img = mpimg.imread(fp.name)
+        plt.imshow(img, origin="upper", interpolation="nearest")
 
-    ax = plt.gca()
-    ax.set_aspect('equal')
-    ax.invert_yaxis()
-    ax.xaxis.tick_top()
-
-    # https://stackoverflow.com/a/34880501/353337
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
-
-    patches = [
-        Rectangle((index0+col-0.5, index0+row-0.5), 1.0, 1.0)
-        for row, cols in enumerate(A.tolil().rows)
-        for col in cols
-        ]
-    p = PatchCollection(patches, color='k')
-    ax.add_collection(p)
     return
 
 
@@ -45,7 +35,6 @@ def show(*args, **kwargs):
 
 
 class RowIterator:
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, A, border_width, border_color, colormap):
         self.A = A.tocsr()
         self.border_width = border_width
@@ -55,56 +44,56 @@ class RowIterator:
         border_color_is_gray = numpy.all(rgb[0] == rgb)
 
         if colormap is None and (border_width == 0 or border_color_is_bw):
-            self.mode = 'binary'
+            self.mode = "binary"
             self.border_color = False
             self.bitdepth = 1
             self.dtype = numpy.bool
 
         elif colormap is None and border_color_is_gray:
-            self.mode = 'grayscale'
+            self.mode = "grayscale"
             self.bitdepth = 8
             self.dtype = numpy.uint8
-            self.border_color = numpy.uint8(numpy.round(rgb[0]*255))
+            self.border_color = numpy.uint8(numpy.round(rgb[0] * 255))
 
         else:
-            self.mode = 'rgb'
-            self.border_color = numpy.round(rgb*255).astype(numpy.uint8)
+            self.mode = "rgb"
+            self.border_color = numpy.round(rgb * 255).astype(numpy.uint8)
             self.dtype = numpy.uint8
             self.bitdepth = 8
 
         if colormap is None:
-            if self.mode == 'binary':
-                # pylint: disable=unused-argument
+            if self.mode == "binary":
+
                 def convert_values(idx, vals):
                     out = numpy.ones(self.A.shape[1], dtype=self.dtype)
                     out[idx] = False
                     return out
-            elif self.mode == 'grayscale':
-                # pylint: disable=unused-argument
+
+            elif self.mode == "grayscale":
+
                 def convert_values(idx, vals):
                     out = numpy.full(self.A.shape[1], 255, dtype=self.dtype)
                     out[idx] = 0
                     return out
+
             else:
-                assert self.mode == 'rgb'
-                # pylint: disable=unused-argument
+                assert self.mode == "rgb"
+
                 def convert_values(idx, vals):
-                    out = numpy.full(
-                        (self.A.shape[1], 3), 255, dtype=self.dtype
-                        )
+                    out = numpy.full((self.A.shape[1], 3), 255, dtype=self.dtype)
                     out[idx, :] = 0
                     return out.flatten()
 
         else:
-            assert self.mode == 'rgb'
+            assert self.mode == "rgb"
             # Convert the string into a colormap object with `to_rgba()`,
             # <https://stackoverflow.com/a/15140118/353337>.
             import matplotlib.cm as cmx
+
             cm = plt.get_cmap(colormap)
             c_norm = colors.Normalize(
-                vmin=min(0.0, self.A.data.min()),
-                vmax=max(0.0, self.A.data.max())
-                )
+                vmin=min(0.0, self.A.data.min()), vmax=max(0.0, self.A.data.max())
+            )
             scalar_map = cmx.ScalarMappable(norm=c_norm, cmap=cm)
 
             def convert_values(idx, vals):
@@ -125,41 +114,40 @@ class RowIterator:
         m = self.A.shape[0]
         b = self.border_width
 
-        if self.current >= m + 2*b:
+        if self.current >= m + 2 * b:
             raise StopIteration
 
         if b == 0:
             row = self.A[self.current]
             out = self.convert_values(row.indices, row.data)
         else:
-            if self.current < b or self.current > m+b-1:
-                out = numpy.tile(
-                    self.border_color, self.A.shape[1] + 2*b
-                    ).astype(self.dtype)
+            if self.current < b or self.current > m + b - 1:
+                out = numpy.tile(self.border_color, self.A.shape[1] + 2 * b).astype(
+                    self.dtype
+                )
             else:
-                row = self.A[self.current-b]
+                row = self.A[self.current - b]
                 border = numpy.tile(self.border_color, b)
-                out = numpy.concatenate([
-                    border,
-                    self.convert_values(row.indices, row.data),
-                    border,
-                    ])
+                out = numpy.concatenate(
+                    [border, self.convert_values(row.indices, row.data), border]
+                )
 
         self.current += 1
         return out
 
 
-def write_png(filename, A, border_width=0, border_color='0.5', colormap=None):
+def write_png(filename, A, border_width=0, border_color="0.5", colormap=None):
     iterator = RowIterator(A, border_width, border_color, colormap)
 
     m, n = A.shape
     w = png.Writer(
-        n+2*border_width, m+2*border_width,
-        greyscale=iterator.mode != 'rgb',
-        bitdepth=iterator.bitdepth
-        )
+        n + 2 * border_width,
+        m + 2 * border_width,
+        greyscale=iterator.mode != "rgb",
+        bitdepth=iterator.bitdepth,
+    )
 
-    with open(filename, 'wb') as f:
+    with open(filename, "wb") as f:
         w.write(f, iterator)
 
     return
