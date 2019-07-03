@@ -13,13 +13,21 @@ Example:
 import betterspy
 
 A = sparse.rand(20, 20, density=0.1)
+
+# betterspy.plot()
+# set attributes on gca()
+# plt.show()
+# or directly
+
 betterspy.show(A)
+
 betterspy.write_png(
     "out.png", A,
     # border_width=2,
     # border_color="red",
     # colormap="viridis"
     )
+
 ```
 
 <img src="https://nschloe.github.io/betterspy/plain.png"> |
