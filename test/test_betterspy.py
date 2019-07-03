@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 import os
 import tempfile
 
@@ -89,6 +87,12 @@ def test_readme_images():
     #     'ATA.png', M, border_width=2,
     #     colormap='viridis'
     #     )
+    return
+
+
+def test_cli():
+    betterspy.cli.main(["gre_343_343_crg.mm"])
+    betterspy.cli.main(["gre_343_343_crg.mm", "out.png"])
     return
 
 

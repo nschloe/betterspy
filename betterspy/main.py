@@ -1,14 +1,11 @@
-# -*- coding: utf8 -*-
-#
 """
 Better spy() function for Scipy sparse matrices.
 """
 import tempfile
 
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import matplotlib.colors as colors
-
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 import numpy
 import png  # purepng
 
