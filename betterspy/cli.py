@@ -35,7 +35,6 @@ def main(argv=None):
 
 
 def _get_parser():
-    """Parse input options."""
     import argparse
 
     parser = argparse.ArgumentParser(
@@ -83,5 +82,4 @@ def _get_parser():
         version=_get_version_text(),
         help="display version information",
     )
-
     return parser

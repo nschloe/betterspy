@@ -90,5 +90,11 @@ def test_readme_images():
     return
 
 
+def test_cli():
+    betterspy.cli.main(["gre_343_343_crg.mm"])
+    betterspy.cli.main(["gre_343_343_crg.mm", "out.png"])
+    return
+
+
 if __name__ == "__main__":
     test_readme_images()

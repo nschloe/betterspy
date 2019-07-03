@@ -9,7 +9,7 @@ jobs:
       - run: apt install -y git python3-pip
       - checkout
       - run: pip3 install -U black flake8
-      - run: LC_ALL=C.UTF-8 black --check setup.py betterspy/ test/*.py
+      - run: LC_ALL=C.UTF-8 black --check .
       - run: flake8 setup.py betterspy/ test/*.py
   build:
     working_directory: ~/work
@@ -17,15 +17,16 @@ jobs:
       - image: ubuntu:18.04
     steps:
       - run: apt update
-      - run: apt install -y git python3-pip python3-dolfin
+      - run: apt install -y git python3-pip python3-dolfin curl
       - run: pip3 install -U pytest pytest-cov
       - checkout
       - run: pip3 install .
       - run: pip3 install -r test_requirements.txt
+      #
+      - run: curl https://people.sc.fsu.edu/~jburkardt/data/mm/gre_343_343_crg.mm > test/gre_343_343_crg.mm
       # The tests
       - run: cd test/ && MPLBACKEND=Agg pytest --cov betterspy
       # submit to codecov
-      - run: apt install -y curl
       - run: bash <(curl -s https://codecov.io/bash) -R ~/work
 
 workflows:
