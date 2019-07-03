@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
 import sys
 
 import scipy.io
 
-from .__about__ import __version__, __copyright__
-from .main import write_png, show
+from .__about__ import __copyright__, __version__
+from .main import show, write_png
 
 
 def _get_version_text():
