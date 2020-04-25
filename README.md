@@ -31,8 +31,7 @@ betterspy.write_png(
 
 ```
 
-<img src="https://nschloe.github.io/betterspy/plain.png"> |
-<img src="https://nschloe.github.io/betterspy/viridis.png">
+<img src="https://nschloe.github.io/betterspy/plain.png"> | <img src="https://nschloe.github.io/betterspy/viridis.png">
 :-------------------:|:------------------:|
 no colormap          |  viridis           |
 
