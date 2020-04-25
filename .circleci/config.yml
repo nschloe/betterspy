@@ -16,9 +16,10 @@ jobs:
     steps:
     steps:
       - run: sudo apt update
-      - run: sudo apt install -y python3-dolfin
+      - run: sudo apt install -y python3-dolfin git-lfs
       - run: pip3 install -U pytest pytest-cov
       - checkout
+      - git lfs pull
       - run: pip3 install .
       - run: pip3 install -r test_requirements.txt
       # The tests
