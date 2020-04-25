@@ -1,6 +1,6 @@
+from . import cli
 from .__about__ import __author__, __author_email__, __version__, __website__
 from .main import plot, show, write_png
-from . import cli
 
 __all__ = [
     "__version__",

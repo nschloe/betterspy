@@ -32,4 +32,4 @@ black:
 
 lint:
 	black --check .
-	flake8 setup.py betterspy/ test/*.py
+	flake8 .
