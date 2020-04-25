@@ -27,7 +27,7 @@ jobs:
       # The tests
       - run: cd test/ && MPLBACKEND=Agg pytest --cov betterspy
       # submit to codecov
-      - run: bash <(curl -s https://codecov.io/bash) -R ~/work
+      - run: bash <(curl -s https://codecov.io/bash)
 
 workflows:
   version: 2
