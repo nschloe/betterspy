@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 import tempfile
 
 import imageio
@@ -29,7 +29,7 @@ def test_png(ref, kwargs):
     numpy.random.seed(123)
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        filepath = os.path.join(temp_dir, "test.png")
+        filepath = Path(temp_dir) / "test.png"
         betterspy.write_png(filepath, M, **kwargs)
         im = imageio.imread(filepath)
         y = numpy.random.randint(0, 100, size=numpy.prod(im.shape))
@@ -77,7 +77,7 @@ def test_readme_images():
     M = A
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        filepath = os.path.join(temp_dir, "test.png")
+        filepath = Path(temp_dir) / "test.png"
         betterspy.write_png(filepath, M, border_width=2)
 
     # betterspy.write_png(
@@ -88,8 +88,10 @@ def test_readme_images():
 
 
 def test_cli():
-    betterspy.cli.main(["gre_343_343_crg.mm"])
-    betterspy.cli.main(["gre_343_343_crg.mm", "out.png"])
+    this_dir = Path(__file__).resolve().parent
+    mmfile = this_dir / "data" / "gre_343_343_crg.mm"
+    betterspy.cli.main([mmfile.as_posix()])
+    betterspy.cli.main([mmfile.as_posix(), "out.png"])
 
 
 if __name__ == "__main__":
