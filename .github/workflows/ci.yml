@@ -29,8 +29,10 @@ jobs:
       with:
         python-version: "3.x"
     - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: pip install -r test_requirements.txt
+    - name: Install package
+      run: |
+        pip install -r test_requirements.txt
+        pip install .
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
