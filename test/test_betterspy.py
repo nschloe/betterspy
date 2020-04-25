@@ -12,7 +12,6 @@ import betterspy
 def test_show():
     M = sparse.rand(20, 20, density=0.1)
     betterspy.show(M)
-    return
 
 
 @pytest.mark.parametrize(
@@ -35,8 +34,6 @@ def test_png(ref, kwargs):
         im = imageio.imread(filepath)
         y = numpy.random.randint(0, 100, size=numpy.prod(im.shape))
         assert numpy.dot(y, im.flatten()) == ref
-
-    return
 
 
 def test_readme_images():
@@ -93,7 +90,6 @@ def test_readme_images():
 def test_cli():
     betterspy.cli.main(["gre_343_343_crg.mm"])
     betterspy.cli.main(["gre_343_343_crg.mm", "out.png"])
-    return
 
 
 if __name__ == "__main__":

@@ -35,8 +35,7 @@ jobs:
         pip install .
     - name: Get dependencies
       run: |
-        sudo apt install -y python3-dolfin curl
-        curl https://people.sc.fsu.edu/~jburkardt/data/mm/gre_343_343_crg.mm > test/gre_343_343_crg.mm
+        sudo apt install -y python3-dolfin
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov

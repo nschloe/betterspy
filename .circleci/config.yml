@@ -16,13 +16,11 @@ jobs:
     steps:
     steps:
       - run: sudo apt update
-      - run: sudo apt install -y python3-dolfin curl
+      - run: sudo apt install -y python3-dolfin
       - run: pip3 install -U pytest pytest-cov
       - checkout
       - run: pip3 install .
       - run: pip3 install -r test_requirements.txt
-      #
-      - run: curl https://people.sc.fsu.edu/~jburkardt/data/mm/gre_343_343_crg.mm > test/gre_343_343_crg.mm
       # The tests
       - run:
           command: pytest --cov betterspy
@@ -30,7 +28,9 @@ jobs:
           env:
             MPLBACKEND: Agg
       # submit to codecov
-      - run: bash <(curl -s https://codecov.io/bash)
+      - run: |
+          sudo apt install -y curl
+          bash <(curl -s https://codecov.io/bash)
 
 workflows:
   version: 2
