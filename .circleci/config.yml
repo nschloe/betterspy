@@ -3,31 +3,35 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: ubuntu:18.04
+      - image: circleci/python:3
     steps:
-      - run: apt update
-      - run: apt install -y git python3-pip
       - checkout
-      - run: pip3 install -U black flake8
-      - run: LC_ALL=C.UTF-8 black --check .
-      - run: flake8 setup.py betterspy/ test/*.py
+      - run: pip install black flake8
+      - run: black --check .
+      - run: flake8 .
   build:
     working_directory: ~/work
     docker:
-      - image: ubuntu:18.04
+      - image: circleci/python:3
     steps:
-      - run: apt update
-      - run: apt install -y git python3-pip python3-dolfin curl
+    steps:
+      - run: sudo apt update
+      - run: sudo apt install -y python3-dolfin git-lfs
       - run: pip3 install -U pytest pytest-cov
       - checkout
+      - run: git lfs pull
       - run: pip3 install .
       - run: pip3 install -r test_requirements.txt
-      #
-      - run: curl https://people.sc.fsu.edu/~jburkardt/data/mm/gre_343_343_crg.mm > test/gre_343_343_crg.mm
       # The tests
-      - run: cd test/ && MPLBACKEND=Agg pytest --cov betterspy
+      - run:
+          command: pytest --cov betterspy
+          working_directory: test/
+          env:
+            MPLBACKEND: Agg
       # submit to codecov
-      - run: bash <(curl -s https://codecov.io/bash) -R ~/work
+      - run: |
+          sudo apt install -y curl
+          bash <(curl -s https://codecov.io/bash)
 
 workflows:
   version: 2

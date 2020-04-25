@@ -8,4 +8,3 @@ example/
 .pytest_cache/
 .coverage
 *.png
-*.mm
