@@ -2,7 +2,7 @@ import sys
 
 import scipy.io
 
-from .__about__ import __copyright__, __version__
+from .__about__ import __version__
 from .main import show, write_png
 
 
@@ -15,7 +15,7 @@ def _get_version_text():
                 sys.version_info.minor,
                 sys.version_info.micro,
             ),
-            __copyright__,
+            "Copyright (c) 2018-2020 Nico Schlömer <nico.schloemer@gmail.com>"
         ]
     )
 
