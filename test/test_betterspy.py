@@ -37,6 +37,7 @@ def test_png(ref, kwargs):
 
 
 def test_readme_images():
+    pytest.importorskip("dolfin")
     from dolfin import (
         MeshEditor,
         Mesh,
