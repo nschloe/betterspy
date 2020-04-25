@@ -2,7 +2,8 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/nschloe/betterspy/master.svg?style=flat-square)](https://circleci.com/gh/nschloe/betterspy)
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/betterspy.svg?style=flat-square)](https://codecov.io/gh/nschloe/betterspy)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/ambv/black)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/betterspy.svg?style=flat-square)](https://pypi.org/pypi/betterspy/)
 [![PyPi Version](https://img.shields.io/pypi/v/betterspy.svg?style=flat-square)](https://pypi.org/project/betterspy)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/betterspy.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/betterspy)
 
@@ -48,7 +49,7 @@ See `betterspy -h` for all options.
 betterspy is [available from the Python Package
 Index](https://pypi.org/project/betterspy/), so simply do
 ```
-pip3 install betterspy --user
+pip install betterspy
 ```
 to install.
 
