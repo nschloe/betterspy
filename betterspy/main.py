@@ -23,13 +23,10 @@ def plot(A, border_width=0, border_color="0.5", colormap=None):
         img = mpimg.imread(fp.name)
         plt.imshow(img, origin="upper", interpolation="nearest")
 
-    return
-
 
 def show(*args, **kwargs):
     plot(*args, **kwargs)
     plt.show()
-    return
 
 
 class RowIterator:
@@ -147,5 +144,3 @@ def write_png(filename, A, border_width=0, border_color="0.5", colormap=None):
 
     with open(filename, "wb") as f:
         w.write(f, iterator)
-
-    return

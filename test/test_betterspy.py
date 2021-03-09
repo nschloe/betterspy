@@ -85,7 +85,6 @@ def test_readme_images():
     #     'ATA.png', M, border_width=2,
     #     colormap='viridis'
     #     )
-    return
 
 
 def test_cli():
