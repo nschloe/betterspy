@@ -45,7 +45,7 @@ class RowIterator:
             self.mode = "binary"
             self.border_color = False
             self.bitdepth = 1
-            self.dtype = numpy.bool
+            self.dtype = bool
 
         elif colormap is None and border_color_is_gray:
             self.mode = "grayscale"
