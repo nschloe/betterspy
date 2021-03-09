@@ -26,11 +26,9 @@ clean:
 	@rm -rf *.egg-info/ build/ dist/ .tox/
 
 format:
-	isort -rc .
+	isort .
 	black .
-
-black:
-	black .
+	blacken-docs README.md
 
 lint:
 	black --check .

@@ -17,6 +17,7 @@ Show sparsity patterns of sparse matrices or write them to image files.
 Example:
 ```python
 import betterspy
+from scipy import sparse
 
 A = sparse.rand(20, 20, density=0.1)
 
@@ -28,11 +29,12 @@ A = sparse.rand(20, 20, density=0.1)
 betterspy.show(A)
 
 betterspy.write_png(
-    "out.png", A,
+    "out.png",
+    A,
     # border_width=2,
     # border_color="red",
     # colormap="viridis"
-    )
+)
 ```
 
 <img src="https://nschloe.github.io/betterspy/plain.png"> | <img src="https://nschloe.github.io/betterspy/viridis.png">

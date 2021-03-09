@@ -7,7 +7,6 @@ import matplotlib.colors as colors
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy
-
 import png  # purepng
 
 
