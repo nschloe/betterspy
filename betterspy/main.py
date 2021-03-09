@@ -7,7 +7,6 @@ import matplotlib.colors as colors
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy
-
 import png  # purepng
 
 
@@ -23,13 +22,10 @@ def plot(A, border_width=0, border_color="0.5", colormap=None):
         img = mpimg.imread(fp.name)
         plt.imshow(img, origin="upper", interpolation="nearest")
 
-    return
-
 
 def show(*args, **kwargs):
     plot(*args, **kwargs)
     plt.show()
-    return
 
 
 class RowIterator:
@@ -45,7 +41,7 @@ class RowIterator:
             self.mode = "binary"
             self.border_color = False
             self.bitdepth = 1
-            self.dtype = numpy.bool
+            self.dtype = bool
 
         elif colormap is None and border_color_is_gray:
             self.mode = "grayscale"
@@ -147,5 +143,3 @@ def write_png(filename, A, border_width=0, border_color="0.5", colormap=None):
 
     with open(filename, "wb") as f:
         w.write(f, iterator)
-
-    return

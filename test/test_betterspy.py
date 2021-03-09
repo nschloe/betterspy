@@ -1,5 +1,5 @@
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import imageio
 import numpy
@@ -38,19 +38,19 @@ def test_png(ref, kwargs):
 
 def test_readme_images():
     pytest.importorskip("dolfin")
-    from dolfin import (
-        MeshEditor,
-        Mesh,
-        FunctionSpace,
-        assemble,
-        EigenMatrix,
-        dot,
-        grad,
-        dx,
-        TrialFunction,
-        TestFunction,
-    )
     import meshzoo
+    from dolfin import (
+        EigenMatrix,
+        FunctionSpace,
+        Mesh,
+        MeshEditor,
+        TestFunction,
+        TrialFunction,
+        assemble,
+        dot,
+        dx,
+        grad,
+    )
 
     points, cells = meshzoo.rectangle(-1.0, 1.0, -1.0, 1.0, 20, 20)
 
@@ -85,7 +85,6 @@ def test_readme_images():
     #     'ATA.png', M, border_width=2,
     #     colormap='viridis'
     #     )
-    return
 
 
 def test_cli():
