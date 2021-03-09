@@ -37,49 +37,23 @@ def test_png(ref, kwargs):
 
 
 def test_readme_images():
-    pytest.importorskip("dolfin")
     import meshzoo
-    from dolfin import (
-        EigenMatrix,
-        FunctionSpace,
-        Mesh,
-        MeshEditor,
-        TestFunction,
-        TrialFunction,
-        assemble,
-        dot,
-        dx,
-        grad,
-    )
+    from skfem import BilinearForm, ElementTriP2, InteriorBasis, MeshTri
+    from skfem.helpers import dot, grad
 
-    points, cells = meshzoo.rectangle(-1.0, 1.0, -1.0, 1.0, 20, 20)
+    @BilinearForm
+    def laplace(u, v, _):
+        return dot(grad(u), grad(v))
 
-    # Convert points, cells to dolfin mesh
-    editor = MeshEditor()
-    mesh = Mesh()
-    # topological and geometrical dimension 2
-    editor.open(mesh, "triangle", 2, 2, 1)
-    editor.init_vertices(len(points))
-    editor.init_cells(len(cells))
-    for k, point in enumerate(points):
-        editor.add_vertex(k, point[:2])
-    for k, cell in enumerate(cells.astype(numpy.uintp)):
-        editor.add_cell(k, cell)
-    editor.close()
+    points, cells = meshzoo.rectangle_tri((-1.0, -1.0), (1.0, 1.0), 20)
+    mesh = MeshTri(points.T, cells.T)
 
-    V = FunctionSpace(mesh, "CG", 1)
-    u = TrialFunction(V)
-    v = TestFunction(V)
-    L = EigenMatrix()
-    assemble(dot(grad(u), grad(v)) * dx, tensor=L)
-    A = L.sparray()
-
-    # M = A.T.dot(A)
-    M = A
+    basis = InteriorBasis(mesh, ElementTriP2())
+    A = laplace.assemble(basis)
 
     with tempfile.TemporaryDirectory() as temp_dir:
         filepath = Path(temp_dir) / "test.png"
-        betterspy.write_png(filepath, M, border_width=2)
+        betterspy.write_png(filepath, A, border_width=2)
 
     # betterspy.write_png(
     #     'ATA.png', M, border_width=2,
