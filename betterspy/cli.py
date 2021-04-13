@@ -1,4 +1,7 @@
 import sys
+import tarfile
+import tempfile
+from pathlib import Path
 
 import scipy.io
 
@@ -20,18 +23,35 @@ def _get_version_text():
     )
 
 
+def _read_matrix(filename):
+    return {".mtx": scipy.io.mmread, ".rb": scipy.io.hb_read}[filename.suffix](filename)
+
+
 def main(argv=None):
     # Parse command line arguments.
     parser = _get_parser()
     args = parser.parse_args(argv)
 
-    A = scipy.io.mmread(args.infile)
+    infile = args.infile
+    A = None
+    if infile.suffixes == [".tar", ".gz"]:
+        with tarfile.open(infile, "r:gz") as tar:
+            for m in tar.getmembers():
+                if Path(m.name).suffix in [".mtx", ".rb."]:
+                    with tempfile.TemporaryDirectory() as tmpdir:
+                        tar.extract(m, path=tmpdir)
+                        filename = Path(tmpdir) / Path(m.name)
+                        A = _read_matrix(filename)
+                    break
+    else:
+        A = _read_matrix(infile)
+
+    assert A is not None
+
     if args.outfile is None:
         show(A)
     else:
         write_png(args.outfile, A, args.border_width, args.border_color, args.colormap)
-
-    return
 
 
 def _get_parser():
@@ -42,7 +62,7 @@ def _get_parser():
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
-    parser.add_argument("infile", type=str, help="input matrix market file")
+    parser.add_argument("infile", type=Path, help="input matrix market file")
 
     parser.add_argument(
         "outfile", type=str, nargs="?", default=None, help="output png file (optional)"
