@@ -24,7 +24,9 @@ def _get_version_text():
 
 
 def _read_matrix(filename):
-    return {".mtx": scipy.io.mmread, ".rb": scipy.io.hb_read}[filename.suffix](filename)
+    return {".mtx": scipy.io.mmread, ".mm": scipy.io.mmread, ".rb": scipy.io.hb_read}[
+        filename.suffix
+    ](filename)
 
 
 def main(argv=None):
