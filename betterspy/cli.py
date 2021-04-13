@@ -33,20 +33,19 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     infile = args.infile
-    A = None
     if infile.suffixes == [".tar", ".gz"]:
         with tarfile.open(infile, "r:gz") as tar:
+            A = None
             for m in tar.getmembers():
-                if Path(m.name).suffix in [".mtx", ".rb."]:
+                if Path(m.name).suffix in [".mtx", ".rb"]:
                     with tempfile.TemporaryDirectory() as tmpdir:
                         tar.extract(m, path=tmpdir)
                         filename = Path(tmpdir) / Path(m.name)
                         A = _read_matrix(filename)
                     break
+            assert A is not None, f"Couldn't find matrix file in {infile}."
     else:
         A = _read_matrix(infile)
-
-    assert A is not None
 
     if args.outfile is None:
         show(A)
