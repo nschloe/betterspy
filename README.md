@@ -50,7 +50,7 @@ See `betterspy -h` for all options.
 
 ### Gallery
 
-<img src="https://nschloe.github.io/betterspy/bp_200.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/bp_600.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/Chebyshev2.png" width="70%">
+<img src="https://nschloe.github.io/betterspy/bp_200.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/bp_600.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/Chebyshev2.mtx.png" width="70%">
 :---------:|:------------:|:---------------:|
 `bp_200`   |  `bp_600`    |  `Chebyshev2`   |
 
