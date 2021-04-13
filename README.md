@@ -41,8 +41,9 @@ betterspy.write_png(
 :-------------------:|:------------------:|
 no colormap          |  viridis           |
 
-There is a command-line tool that can be used to show [matrix-market
-files](https://math.nist.gov/MatrixMarket/):
+There is a command-line tool that can be used to show
+[matrix-market](https://math.nist.gov/MatrixMarket/) or
+[Harwell-Boeing](https://en.wikipedia.org/wiki/Harwell-Boeing_file_format) files:
 ```
 betterspy msc00726.mtx [out.png]
 ```
