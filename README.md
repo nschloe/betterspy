@@ -5,7 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/betterspy.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/betterspy)
 [![PyPi downloads](https://img.shields.io/pypi/dm/betterspy.svg?style=flat-square)](https://pypistats.org/packages/betterspy)
 
-[![Discord](https://img.shields.io/static/v1?logo=discord&label=chat&message=on%20discord&color=7289da&style=flat-square)](https://discord.com/channels/818781969562599434/818781969562599438)
+[![Discord](https://img.shields.io/static/v1?logo=discord&label=chat&message=on%20discord&color=7289da&style=flat-square)](https://discord.gg/hnTJ5MRX2Y)
 
 [![gh-actions](https://img.shields.io/github/workflow/status/nschloe/betterspy/ci?style=flat-square)](https://github.com/nschloe/betterspy/actions?query=workflow%3Aci)
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/betterspy.svg?style=flat-square)](https://codecov.io/gh/nschloe/betterspy)
@@ -41,12 +41,27 @@ betterspy.write_png(
 :-------------------:|:------------------:|
 no colormap          |  viridis           |
 
-There is a command-line tool that can be used to show [matrix-market
-files](https://math.nist.gov/MatrixMarket/):
+There is a command-line tool that can be used to show
+[matrix-market](https://math.nist.gov/MatrixMarket/) or
+[Harwell-Boeing](https://en.wikipedia.org/wiki/Harwell-Boeing_file_format) files:
 ```
 betterspy msc00726.mtx [out.png]
 ```
 See `betterspy -h` for all options.
+
+### Gallery
+
+<img src="https://nschloe.github.io/betterspy/bp_200.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/bp_600.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/Chebyshev2.mtx.png" width="70%">
+:---------:|:------------:|:---------------:|
+`bp_200`   |  `bp_600`    |  `Chebyshev2`   |
+
+<img src="https://nschloe.github.io/betterspy/orani678.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/rajat19.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/rdb1250l.mtx.png" width="70%">
+:---------:|:------------:|:---------------:|
+`orani678`   |  `rajat19`    |  `rdb1250l`   |
+
+<img src="https://nschloe.github.io/betterspy/rdb3200l.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/west0989.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/west1505.mtx.png" width="70%">
+:---------:|:------------:|:---------------:|
+`rdb3200l`   |  `west0989`    |  `west1505`   |
 
 
 ### Installation
