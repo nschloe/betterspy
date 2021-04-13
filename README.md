@@ -54,6 +54,14 @@ See `betterspy -h` for all options.
 :---------:|:------------:|:---------------:|
 `bp_200`   |  `bp_600`    |  `Chebyshev2`   |
 
+<img src="https://nschloe.github.io/betterspy/orani678.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/rajat19.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/rdb1250l.mtx.png" width="70%">
+:---------:|:------------:|:---------------:|
+`orani678`   |  `rajat19`    |  `rdb1250l`   |
+
+<img src="https://nschloe.github.io/betterspy/rdb3200l.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/west0989.mtx.png" width="70%"> | <img src="https://nschloe.github.io/betterspy/west1505.mtx.png" width="70%">
+:---------:|:------------:|:---------------:|
+`rdb3200l`   |  `west0989`    |  `west1505`   |
+
 
 ### Installation
 
